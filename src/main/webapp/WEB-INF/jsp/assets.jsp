@@ -5,7 +5,8 @@
 <jsp:include page="_header.jsp"/>
 
 <div class="card">
-    <h3>Discovered assets</h3>
+    <h3>Discovered assets (sorted by risk, highest first)</h3>
+    <p class="hint">Oldest-discovered assets are listed first.</p>
     <table class="data">
         <thead><tr><th>IP</th><th>Hostname</th><th>OS</th><th>Fingerprinted</th><th>Vulns</th><th>Risk</th></tr></thead>
         <tbody>

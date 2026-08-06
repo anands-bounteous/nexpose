@@ -8,7 +8,9 @@
     <h3>${asset.ipAddress} &mdash; ${asset.hostName}</h3>
     <p><strong>OS:</strong> ${asset.operatingSystem} &nbsp;|&nbsp;
        <strong>Risk:</strong> ${asset.riskScore} &nbsp;|&nbsp;
-       <strong>Fingerprinted:</strong> ${asset.fingerprinted ? 'yes' : 'no'}</p>
+       <strong>Fingerprinted:</strong> ${asset.fingerprinted ? 'yes' : 'no'} &nbsp;|&nbsp;
+       <%-- BUG (SI-3150): inverted -- shows "no" for a live asset and vice versa. --%>
+       <strong>Live:</strong> ${!asset.live ? 'yes' : 'no'}</p>
     <table class="data">
         <thead><tr><th>Vulnerability</th><th>CVE</th><th>Severity</th><th>CVSS</th><th>Port</th></tr></thead>
         <tbody>
@@ -16,7 +18,7 @@
             <tr>
                 <td>${v.title}</td>
                 <td>${v.cve}</td>
-                <td><span class="badge ${v.severity}">${v.severity}</span></td>
+                <td><span class="badge ${v.recomputeSeverityLabel()}">${v.recomputeSeverityLabel()}</span></td>
                 <td>${v.cvssScore}</td>
                 <td>${v.port}/${v.protocol}</td>
             </tr>

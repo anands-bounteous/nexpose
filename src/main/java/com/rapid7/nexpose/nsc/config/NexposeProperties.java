@@ -37,12 +37,24 @@ public class NexposeProperties {
             private int maxPoolSize = 4;
             private int queueCapacity = 25;
 
+            /**
+             * Whether a background scan job that fails should be retried once.
+             *
+             * <p>BUG (SI-3146): background scan jobs are documented (README, ops
+             * runbook) as retried-by-default, so this should default to
+             * {@code true}. The Java-side default here is {@code false}, and
+             * nothing in {@code application.properties} overrides it.</p>
+             */
+            private boolean retryOnFailure = false;
+
             public int getCorePoolSize() { return corePoolSize; }
             public void setCorePoolSize(int corePoolSize) { this.corePoolSize = corePoolSize; }
             public int getMaxPoolSize() { return maxPoolSize; }
             public void setMaxPoolSize(int maxPoolSize) { this.maxPoolSize = maxPoolSize; }
             public int getQueueCapacity() { return queueCapacity; }
             public void setQueueCapacity(int queueCapacity) { this.queueCapacity = queueCapacity; }
+            public boolean isRetryOnFailure() { return retryOnFailure; }
+            public void setRetryOnFailure(boolean retryOnFailure) { this.retryOnFailure = retryOnFailure; }
         }
     }
 

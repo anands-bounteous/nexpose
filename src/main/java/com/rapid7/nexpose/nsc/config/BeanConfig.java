@@ -68,8 +68,10 @@ public class BeanConfig {
     @Bean
     public ScanEnginePool scanEnginePool() {
         // NEX-3107 lives inside runScan(); pool size itself comes from config.
+        // BUG (SI-3145): pool size is hardcoded instead of reading
+        // props.getScan().getPoolSize(), so nexpose.scan.pool-size has no effect.
         return new ScanEnginePool(
-                props.getScan().getPoolSize(),
+                3,
                 props.getScan().getAcquireTimeoutSeconds());
     }
 

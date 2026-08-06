@@ -6,4 +6,7 @@ import java.util.List;
 
 public interface AssetRepository extends JpaRepository<AssetRecord, Long> {
     List<AssetRecord> findByScanId(Long scanId);
+
+    /** Newest-discovered assets first (highest id first). */
+    List<AssetRecord> findAllByOrderByIdDesc();
 }

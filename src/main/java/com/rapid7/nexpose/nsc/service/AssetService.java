@@ -22,7 +22,9 @@ public class AssetService {
     }
 
     public List<AssetRecord> allAssets() {
-        return assetRepository.findAll();
+        // BUG (SI-3148): the asset list page's UI copy claims "oldest first",
+        // but this returns newest-discovered (highest id) first.
+        return assetRepository.findAllByOrderByIdDesc();
     }
 
     public AssetRecord getAsset(Long id) {
