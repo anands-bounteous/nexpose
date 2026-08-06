@@ -2,6 +2,7 @@ package com.rapid7.nexpose.nsc.controller;
 
 import com.rapid7.nexpose.nsc.repository.ReportHistoryDao;
 import com.rapid7.nexpose.nsc.repository.ScanRecord;
+import com.rapid7.nexpose.nsc.repository.ScanRepository;
 import com.rapid7.nexpose.nsc.service.ReportService;
 import com.rapid7.nexpose.nsc.service.ScanService;
 import org.slf4j.Logger;
@@ -30,12 +31,14 @@ public class ReportController {
     private final ReportService reportService;
     private final ScanService scanService;
     private final ReportHistoryDao reportHistoryDao;
+    private final ScanRepository scanRepository;
 
     public ReportController(ReportService reportService, ScanService scanService,
-                            ReportHistoryDao reportHistoryDao) {
+                            ReportHistoryDao reportHistoryDao, ScanRepository scanRepository) {
         this.reportService = reportService;
         this.scanService = scanService;
         this.reportHistoryDao = reportHistoryDao;
+        this.scanRepository = scanRepository;
     }
 
     @GetMapping("/report")
@@ -48,6 +51,8 @@ public class ReportController {
     @ResponseBody
     public ResponseEntity<String> generateXml(@RequestParam Long scanId) {
         ScanRecord record = scanService.getScan(scanId);
+        log.info("Generating XML report for scan '{}' ({} vulnerabilit(y/ies) on record)",
+                record.getName(), scanRepository.countVulnerabilities(scanId));   // SI-3144
         String xml = reportService.generateXml(record);        // NEX-3101
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_XML);

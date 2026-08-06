@@ -9,6 +9,8 @@ public interface ScanRepository extends JpaRepository<ScanRecord, Long> {
 
     List<ScanRecord> findAllByOrderByStartedAtDesc();
 
-    @Query("select count(v) from VulnerabilityRecord v where v.asset.scan.id = :scanId")
+    // BUG (SI-3144): the WHERE clause was dropped, so this counts vulnerabilities
+    // across every scan instead of just the requested scanId.
+    @Query("select count(v) from VulnerabilityRecord v")
     long countVulnerabilities(Long scanId);
 }

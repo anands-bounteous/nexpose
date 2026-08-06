@@ -14,10 +14,15 @@ public class WebConfig implements WebMvcConfigurer {
 
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
+        // BUG (SI-3147): "/assets/**" was added here (meant to exclude a static
+        // "/assets/img/**" folder that doesn't actually exist) and unintentionally
+        // also matches the authenticated /assets and /assets/{id} pages, letting
+        // them render without a session.
         registry.addInterceptor(new AuthInterceptor())
                 .addPathPatterns("/**")
                 .excludePathPatterns(
                         "/login", "/logout", "/css/**", "/img/**", "/js/**",
-                        "/webjars/**", "/error", "/h2-console/**", "/favicon.ico");
+                        "/webjars/**", "/error", "/h2-console/**", "/favicon.ico",
+                        "/assets/**");
     }
 }
